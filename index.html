@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<link href="base/jquery-ui.min.css" rel="stylesheet">
+<link href="BOTW.css" rel="stylesheet">
+<link href="index.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="./searchindex.js"></script>
+<script>
+var features = '';
+var searchDatabase = new SearchDatabase();
+var searchResults_length = 0;
+var searchResults = new Object();
+function searchPage(features)
+{
+   var element = document.getElementById('SiteSearch1');
+   if (element.value.length != 0 || element.value != " ")
+   {
+      var value = unescape(element.value);
+      var keywords = value.split(" ");
+      searchResults_length = 0;
+      for (var i=0; i<database_length; i++)
+      {
+         var matches = 0;
+         var words = searchDatabase[i].title + " " + searchDatabase[i].description + " " + searchDatabase[i].keywords;
+         for (var j = 0; j < keywords.length; j++)
+         {
+            var pattern = new RegExp(keywords[j], "i");
+            var result = words.search(pattern);
+            if (result >= 0)
+            {
+               matches++;
+            }
+            else
+            {
+               matches = 0;
+            }
+         }
+         if (matches == keywords.length)
+         {
+            searchResults[searchResults_length++] = searchDatabase[i];
+         }
+      }
+      $('#SiteSearch1_dialog').dialog('open');
+      $('#SiteSearch1_dialog').empty();
+      var html = '';
+      var results = '';
+      html = html + '<span style="font-family:Hylia Serif Beta;font-size:37px;color:#000000">';
+      for (var n=0; n<searchResults_length; n++)
+      {
+         var page_keywords = searchResults[n].keywords;
+         results = results + '<strong><a style="color:#0000FF" href="'+searchResults[n].url+'">'+searchResults[n].title +'<\/a><\/strong><br>Keywords: ' + page_keywords +'<br><br>';
+      }
+      if (searchResults_length == 0)
+      {
+         results = 'No results';
+      }
+      else
+      {
+         html = html + searchResults_length;
+         html = html + ' result(s) found for search term: ';
+         html = html + value;
+         html = html + '<br><br>';
+      }
+      html = html + results;
+      html = html + '<\/span>';
+      $('#SiteSearch1_dialog').html(html);
+      $('#SiteSearch1_dialog').dialog('option', 'position', 'center');
+   }
+   return false;
+}
+function searchParseURL()
+{
+   var url = decodeURIComponent(window.location.href);
+   if (url.indexOf('?') > 0)
+   {
+      var terms = '';
+      var params = url.split('?');
+      var values = params[1].split('&');
+      for (var i=0;i<values.length;i++)
+      {
+         var param = values[i].split('=');
+         if (param[0] == 'q')
+         {
+            terms = unescape(param[1]);
+            break;
+         }
+      }
+      if (terms != '')
+      {
+         var element = document.getElementById('SiteSearch1');
+         element.value = terms;
+         searchPage('');
+      }
+   }
+}
+</script>
+<script>
+$(document).ready(function()
+{
+   searchParseURL();
+   $("#SiteSearch1_dialog").dialog(
+   {
+      modal: true,
+      width: 400,
+      height: 300,
+      position: { my: 'center', at: 'center', of: window },
+      resizable: true,
+      draggable: true,
+      closeOnEscape: true,
+      autoOpen: false,
+      buttons: 
+      {
+         Close: function() 
+         {
+            $(this).dialog('close');
+         }
+      }
+   });
+});
+</script>
+</head>
+<body>
+<div id="wb_Image1" style="position:absolute;left:456px;top:97px;width:807px;height:747px;z-index:0;">
+<img src="images/BotW_Blue_Sheikah_Eye_Symbol.png" id="Image1" alt=""></div>
+<div id="wb_Text1" style="position:absolute;left:785px;top:853px;width:250px;height:29px;z-index:2;">
+<span style="color:#000000;font-family:'Hylia Serif Beta';font-size:24px;">Next Page</span></div>
+<div id="wb_Image2" style="position:absolute;left:456px;top:95px;width:90px;height:88px;z-index:3;">
+<a href="./Apple.html"><img src="images/apple.jpg" id="Image2" alt="Apple" title="Apple"></a></div>
+<div id="wb_Image3" style="position:absolute;left:561px;top:95px;width:89px;height:88px;z-index:4;">
+<a href="./Palm_Fruit.html"><img src="images/palmfruit.jpg" id="Image3" alt="Palmfruit" title="Palmfruit"></a></div>
+<div id="wb_Image4" style="position:absolute;left:661px;top:96px;width:87px;height:87px;z-index:5;">
+<a href="./Wildberry.html"><img src="images/wildberry.jpg" id="Image4" alt="Wildberry" title="Wildberry"></a></div>
+<div id="wb_Image5" style="position:absolute;left:755px;top:95px;width:87px;height:88px;z-index:6;">
+<a href="./Hearty_Durian.html"><img src="images/heartydurian.jpg" id="Image5" alt="Hearty Durian" title="Hearty Durian"></a></div>
+<div id="wb_Image6" style="position:absolute;left:850px;top:95px;width:88px;height:88px;z-index:7;">
+<a href="./Hydomelon.html"><img src="images/hydromelon.jpg" id="Image6" alt="Hydromelon" title="Hydromelon"></a></div>
+<div id="wb_Image7" style="position:absolute;left:945px;top:96px;width:86px;height:87px;z-index:8;">
+<a href="./Spicy_Pepper.html"><img src="images/spicypepper.jpg" id="Image7" alt="Spicy Pepper" title="Spicy Pepper"></a></div>
+<div id="wb_Image8" style="position:absolute;left:1043px;top:95px;width:87px;height:88px;z-index:9;">
+<a href="./Voltfruit.html"><img src="images/voltfruit.jpg" id="Image8" alt="Voltfruit" title="Voltfruit"></a></div>
+<div id="wb_Image9" style="position:absolute;left:1140px;top:97px;width:86px;height:85px;z-index:10;">
+<a href="./Fleet_Lotus_Seeds.html"><img src="images/fleetlotusseeds.jpg" id="Image9" alt="Fleet Lotus Seeds" title="Fleet Lotus Seeds"></a></div>
+<div id="wb_Image10" style="position:absolute;left:456px;top:196px;width:86px;height:88px;z-index:11;">
+<a href="./Mighty_Bananas.html"><img src="images/mightybanana.jpg" id="Image10" alt="Mighty Bananas" title="Mighty Bananas"></a></div>
+<div id="wb_Image11" style="position:absolute;left:560px;top:196px;width:89px;height:86px;z-index:12;">
+<a href="./Hylian_Shroom.html"><img src="images/hylianshroom.jpg" id="Image11" alt="Hylian Shroom" title="Hylian Shroom"></a></div>
+<div id="wb_Image12" style="position:absolute;left:658px;top:196px;width:87px;height:84px;z-index:13;">
+<a href="./Endura_Shroom.html"><img src="images/endurashroom.jpg" id="Image12" alt="Endura Shroom" title="Endura Shroom"></a></div>
+<div id="wb_Image13" style="position:absolute;left:755px;top:198px;width:85px;height:85px;z-index:14;">
+<a href="./Stamella_Shroom.html"><img src="images/stamellashroom.jpg" id="Image13" alt="Stamella Shroom" title="Stamella Shroom"></a></div>
+<div id="wb_Image14" style="position:absolute;left:851px;top:197px;width:87px;height:87px;z-index:15;">
+<a href="./Hearty_Truffle.html"><img src="images/heartytruffle.jpg" id="Image14" alt="Hearty Truffle" title="Hearty Truffle"></a></div>
+<div id="wb_Image15" style="position:absolute;left:945px;top:196px;width:88px;height:85px;z-index:16;">
+<a href="./Big_Hearty_Truffle.html"><img src="images/bigheartytruffle.jpg" id="Image15" alt="Big Hearty Truffle" title="Big Hearty Truffle"></a></div>
+<div id="wb_Image16" style="position:absolute;left:1045px;top:195px;width:87px;height:88px;z-index:17;">
+<a href="./Chillshroom.html"><img src="images/chillshroom.jpg" id="Image16" alt="Chillshroom" title="Chillshroom"></a></div>
+<div id="wb_Image17" style="position:absolute;left:1138px;top:196px;width:87px;height:86px;z-index:18;">
+<a href="./Sunshroom.html" title="Sunshroom Link"><img src="images/sunshroom.jpg" id="Image17" alt="Sunshroom"></a></div>
+<div id="wb_Image18" style="position:absolute;left:458px;top:298px;width:86px;height:86px;z-index:19;">
+<a href="./Zapshroom.html"><img src="images/zapshroom.jpg" id="Image18" alt="Zapshroom" title="Zapshroom"></a></div>
+<div id="wb_Image19" style="position:absolute;left:563px;top:298px;width:85px;height:86px;z-index:20;">
+<a href="./Razorshroom.html"><img src="images/razorshroom.jpg" id="Image19" alt="Razorshroom" title="Razorshroom"></a></div>
+<form name="SiteSearch1_form" id="SiteSearch1_form" accept-charset="UTF-8" onsubmit="return searchPage(features)">
+<input type="text" id="SiteSearch1" style="position:absolute;left:600px;top:30px;width:415px;height:36px;line-height:36px;z-index:21;" name="SiteSearch1" value="" spellcheck="false" placeholder="Search this website"></form>
+<div id="SiteSearch1_dialog" title="Search results"></div>
+<div id="wb_Image20" style="position:absolute;left:481px;top:36px;width:82px;height:34px;z-index:22;">
+<a href="./index.html"><img src="images/Text2.png" id="Image20" alt=""></a></div>
+<div id="wb_Image21" style="position:absolute;left:661px;top:298px;width:85px;height:86px;z-index:23;">
+<a href="./Ironshroom.html"><img src="images/ironshroom.jpg" id="Image21" alt="Ironshroom" title="Ironshroom"></a></div>
+<div id="wb_Image22" style="position:absolute;left:752px;top:297px;width:86px;height:85px;z-index:24;">
+<a href="./Silent_Shroom.html"><img src="images/silentshroom.jpg" id="Image22" alt="Silient Shroom" title="Silent Shroom"></a></div>
+<div id="wb_Image23" style="position:absolute;left:849px;top:297px;width:88px;height:88px;z-index:25;">
+<a href="./Hyrule_Herb.html"><img src="images/hyruleherb.jpg" id="Image23" alt="Hyrule Herb" title="Hyrule Herb"></a></div>
+<div id="wb_Image24" style="position:absolute;left:945px;top:298px;width:84px;height:83px;z-index:26;">
+<a href="./Hearty_Radish.html" title="Hearty Radish Link"><img src="images/heartyradish.jpg" id="Image24" alt="Hearty Radish"></a></div>
+<div id="wb_Image25" style="position:absolute;left:1043px;top:298px;width:87px;height:86px;z-index:27;">
+<a href="./Big_Hearty_Radish.html"><img src="images/bigheartyradish.jpg" id="Image25" alt="Big Hearty Radish" title="Big Hearty Radish"></a></div>
+<div id="wb_Image26" style="position:absolute;left:1138px;top:297px;width:87px;height:86px;z-index:28;">
+<a href="./Cool_Safflina.html"><img src="images/coolsafflina.jpg" id="Image26" alt="Cool Safflina" title="Cool Safflina"></a></div>
+<div id="wb_Image27" style="position:absolute;left:456px;top:401px;width:86px;height:86px;z-index:29;">
+<a href="./Warm_Safflina.html"><img src="images/warmsafflina.jpg" id="Image27" alt="Warm Safflina" title="Warm Safflina"></a></div>
+<div id="wb_Image28" style="position:absolute;left:560px;top:400px;width:88px;height:88px;z-index:30;">
+<a href="./Electric_Safflina.html"><img src="images/electricsafflina.jpg" id="Image28" alt="Electric Safflina" title="Electric Safflina"></a></div>
+<div id="wb_Image29" style="position:absolute;left:658px;top:400px;width:87px;height:88px;z-index:31;">
+<a href="./Swift_Carrot.html"><img src="images/swiftcarrot.jpg" id="Image29" alt="Swift Carrot" title="Swift Carrot"></a></div>
+<div id="wb_Image30" style="position:absolute;left:752px;top:400px;width:86px;height:86px;z-index:32;">
+<a href="./Endura_Carrot.html"><img src="images/enduracarrot.jpg" id="Image30" alt="Endura Carrot" title="Endura Carrot"></a></div>
+<div id="wb_Image31" style="position:absolute;left:849px;top:400px;width:85px;height:85px;z-index:33;">
+<a href="./Fortified_Pumpkin.html"><img src="images/fortifiedpumpkin.jpg" id="Image31" alt="Fortified Pumpkin" title="Fortified Pumpkin"></a></div>
+<div id="wb_Text6" style="position:absolute;left:555px;top:690px;width:609px;height:101px;z-index:34;">
+<span style="color:#FFFFFF;font-family:'Franklin Gothic Heavy';font-size:13px;">Hylia Serif Font made by <a href="http://artsyomni.com/hyliaserif"> <font color="FFFFFF">Artsy Omni.</a><br><br>The Legend of Zelda series is the intellectual property of Nintendo Co. Ltd. This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Nintendo Co. Ltd., or any of its subsidiaries.<br></span></div>
+<div id="wb_Image32" style="position:absolute;left:945px;top:400px;width:87px;height:86px;z-index:35;">
+<a href="./Swift_Violet.html"><img src="images/swiftviolet.jpg" id="Image32" alt="Swift Violet" title="Swift Violet"></a></div>
+<div id="wb_Image33" style="position:absolute;left:1041px;top:400px;width:88px;height:88px;z-index:36;">
+<a href="./Mighty_Thistle.html"><img src="images/mightythistle.jpg" id="Image33" alt="Mighty Thistle" title="Mighty Thistle"></a></div>
+<div id="wb_Image34" style="position:absolute;left:1140px;top:400px;width:84px;height:85px;z-index:37;">
+<a href="./Armoranth.html"><img src="images/armoranth.jpg" id="Image34" alt="Armoranth" title="Armoranth"></a></div>
+<div id="wb_Image35" style="position:absolute;left:456px;top:498px;width:85px;height:84px;z-index:38;">
+<a href="./Blue_Nightshade.html"><img src="images/bluenightshade.jpg" id="Image35" alt="Blue Nightshade" title="Blue Nightshade"></a></div>
+<div id="wb_Image36" style="position:absolute;left:560px;top:498px;width:85px;height:85px;z-index:39;">
+<a href="./Silent_Princess.html"><img src="images/silentprincess.jpg" id="Image36" alt="Silent Princess" title="Silent Princess"></a></div>
+<div id="wb_Image37" style="position:absolute;left:658px;top:498px;width:87px;height:87px;z-index:40;">
+<img src="images/courserbeehoney.jpg" id="Image37" alt="Courser Bee Honey" title="Courser bee Honey"></div>
+<div id="wb_Image38" style="position:absolute;left:754px;top:501px;width:86px;height:85px;z-index:41;">
+<a href="./Rushroom.html"><img src="images/rushroom.jpg" id="Image38" alt="Rushroom" title="Rushroom"></a></div>
+</body>
+</html>
