@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hylian Shroom</title>
+<link href="base/jquery-ui.min.css" rel="stylesheet">
+<link href="BOTW.css" rel="stylesheet">
+<link href="Hylian_Shroom.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="./searchindex.js"></script>
+<script>
+var features = '';
+var searchDatabase = new SearchDatabase();
+var searchResults_length = 0;
+var searchResults = new Object();
+function searchPage(features)
+{
+   var element = document.getElementById('SiteSearch1');
+   if (element.value.length != 0 || element.value != " ")
+   {
+      var value = unescape(element.value);
+      var keywords = value.split(" ");
+      searchResults_length = 0;
+      for (var i=0; i<database_length; i++)
+      {
+         var matches = 0;
+         var words = searchDatabase[i].title + " " + searchDatabase[i].description + " " + searchDatabase[i].keywords;
+         for (var j = 0; j < keywords.length; j++)
+         {
+            var pattern = new RegExp(keywords[j], "i");
+            var result = words.search(pattern);
+            if (result >= 0)
+            {
+               matches++;
+            }
+            else
+            {
+               matches = 0;
+            }
+         }
+         if (matches == keywords.length)
+         {
+            searchResults[searchResults_length++] = searchDatabase[i];
+         }
+      }
+      $('#SiteSearch1_dialog').dialog('open');
+      $('#SiteSearch1_dialog').empty();
+      var html = '';
+      var results = '';
+      html = html + '<span style="font-family:Hylia Serif Beta;font-size:37px;color:#000000">';
+      for (var n=0; n<searchResults_length; n++)
+      {
+         var page_keywords = searchResults[n].keywords;
+         results = results + '<strong><a style="color:#0000FF" href="'+searchResults[n].url+'">'+searchResults[n].title +'<\/a><\/strong><br>Keywords: ' + page_keywords +'<br><br>';
+      }
+      if (searchResults_length == 0)
+      {
+         results = 'No results';
+      }
+      else
+      {
+         html = html + searchResults_length;
+         html = html + ' result(s) found for search term: ';
+         html = html + value;
+         html = html + '<br><br>';
+      }
+      html = html + results;
+      html = html + '<\/span>';
+      $('#SiteSearch1_dialog').html(html);
+      $('#SiteSearch1_dialog').dialog('option', 'position', 'center');
+   }
+   return false;
+}
+function searchParseURL()
+{
+   var url = decodeURIComponent(window.location.href);
+   if (url.indexOf('?') > 0)
+   {
+      var terms = '';
+      var params = url.split('?');
+      var values = params[1].split('&');
+      for (var i=0;i<values.length;i++)
+      {
+         var param = values[i].split('=');
+         if (param[0] == 'q')
+         {
+            terms = unescape(param[1]);
+            break;
+         }
+      }
+      if (terms != '')
+      {
+         var element = document.getElementById('SiteSearch1');
+         element.value = terms;
+         searchPage('');
+      }
+   }
+}
+</script>
+<script>
+$(document).ready(function()
+{
+   searchParseURL();
+   $("#SiteSearch1_dialog").dialog(
+   {
+      modal: true,
+      width: 400,
+      height: 300,
+      position: { my: 'center', at: 'center', of: window },
+      resizable: true,
+      draggable: true,
+      closeOnEscape: true,
+      autoOpen: false,
+      buttons: 
+      {
+         Close: function() 
+         {
+            $(this).dialog('close');
+         }
+      }
+   });
+});
+</script>
+</head>
+<body>
+<div id="wb_Image2" style="position:absolute;left:441px;top:152px;width:807px;height:747px;z-index:0;">
+<img src="images/BotW_Blue_Sheikah_Eye_Symbol.png" id="Image2" alt=""></div>
+<div id="wb_Text1" style="position:absolute;left:547px;top:379px;width:531px;height:16px;z-index:2;">
+&nbsp;</div>
+<div id="wb_Text2" style="position:absolute;left:617px;top:379px;width:495px;height:81px;z-index:3;">
+<span style="color:#FFFFFF;font-family:'Franklin Gothic Heavy';font-size:64px;">Hylian Shroom</span></div>
+<div id="wb_Text3" style="position:absolute;left:597px;top:482px;width:515px;height:60px;z-index:4;">
+<span style="color:#FFFFFF;font-family:'Franklin Gothic Heavy';font-size:24px;">A common mushroom found near trees around Hyrule. Eat it to restore half a heart.</span></div>
+<div id="wb_Text4" style="position:absolute;left:597px;top:603px;width:333px;height:75px;z-index:5;">
+<span style="color:#FFFFFF;font-family:'Franklin Gothic Heavy';font-size:20px;">Commonly found in:<br>-Hyrule Field<br>-West Necluda</span></div>
+<div id="wb_Image3" style="position:absolute;left:695px;top:91px;width:282px;height:278px;z-index:6;">
+<img src="images/hylianshroommain.jpg" id="Image3" alt="Hylian Shroom" title="Hylian Shroom"></div>
+<div id="wb_Text5" style="position:absolute;left:673px;top:730px;width:363px;height:41px;z-index:7;">
+<span style="color:#FFFFFF;font-family:'Franklin Gothic Heavy';font-size:20px;"><a href="./Mighty_Bananas.html"><font color="FFFFFF">Last Material</a>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <a href="./Endura_Shroom.html"><font color="FFFFFF">Next Material</a></span><span style="color:#FFFFFF;font-family:'Hylia Serif Beta';font-size:20px;"><br></span></div>
+<form name="SiteSearch1_form" id="SiteSearch1_form" accept-charset="UTF-8" onsubmit="return searchPage(features)">
+<input type="text" id="SiteSearch1" style="position:absolute;left:713px;top:9px;width:415px;height:36px;line-height:36px;z-index:8;" name="SiteSearch1" value="" spellcheck="false" placeholder="Search this website"></form>
+<div id="SiteSearch1_dialog" title="Search results"></div>
+<div id="wb_Image20" style="position:absolute;left:602px;top:15px;width:82px;height:34px;z-index:9;">
+<a href="./index.html"><img src="images/Text2.png" id="Image20" alt=""></a></div>
+<div id="wb_Text6" style="position:absolute;left:547px;top:998px;width:609px;height:101px;z-index:10;">
+<span style="color:#FFFFFF;font-family:'Franklin Gothic Heavy';font-size:13px;">Hylia Serif Font made by <a href="http://artsyomni.com/hyliaserif"> <font color="FFFFFF">Artsy Omni.</a><br><br>The Legend of Zelda series is the intellectual property of Nintendo Co. Ltd. This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Nintendo Co. Ltd., or any of its subsidiaries.<br></span></div>
+</body>
+</html>
